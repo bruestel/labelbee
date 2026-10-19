@@ -1,0 +1,21 @@
+### PlatformIO ###
+.pio
+.pioenvs
+.piolibdeps
+
+### VisualStudioCode ###
+.vscode/
+.history/
+
+### ESP-IDF ###
+# component manager: restored from dependencies.lock, which is tracked
+managed_components/
+# regenerated per environment from sdkconfig.defaults
+sdkconfig
+sdkconfig.*
+!sdkconfig.defaults
+build/
+# generated from www/ by tools/pack_www.py
+src/www_pack.bin
+src/www_pack.S
+__pycache__/

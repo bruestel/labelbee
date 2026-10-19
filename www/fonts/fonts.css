@@ -1,0 +1,66 @@
+/* Embedded label fonts (latin subset incl. umlauts), from @fontsource 5.3.0, SIL OFL 1.1: see LICENSE-*. */
+@font-face { font-family: 'Roboto'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('roboto-400.woff2') format('woff2'); }
+@font-face { font-family: 'Roboto'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('roboto-700.woff2') format('woff2'); }
+@font-face { font-family: 'Roboto Condensed'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('roboto-condensed-400.woff2') format('woff2'); }
+@font-face { font-family: 'Roboto Condensed'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('roboto-condensed-700.woff2') format('woff2'); }
+@font-face { font-family: 'Roboto Mono'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('roboto-mono-400.woff2') format('woff2'); }
+@font-face { font-family: 'Roboto Mono'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('roboto-mono-700.woff2') format('woff2'); }
+@font-face { font-family: 'Roboto Slab'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('roboto-slab-400.woff2') format('woff2'); }
+@font-face { font-family: 'Roboto Slab'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('roboto-slab-700.woff2') format('woff2'); }
+@font-face { font-family: 'Oswald'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('oswald-400.woff2') format('woff2'); }
+@font-face { font-family: 'Oswald'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('oswald-700.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('barlow-400.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('barlow-700.woff2') format('woff2'); }
+
+/* Playful label fonts (latin subset), @fontsource 5.3.0; SIL OFL 1.1 or Apache 2.0: see LICENSE-*. Single-weight fonts get a synthetic bold. */
+@font-face { font-family: 'Comic Neue'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('comic-neue-400.woff2') format('woff2'); }
+@font-face { font-family: 'Comic Neue'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('comic-neue-700.woff2') format('woff2'); }
+@font-face { font-family: 'Fredoka'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('fredoka-400.woff2') format('woff2'); }
+@font-face { font-family: 'Fredoka'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('fredoka-700.woff2') format('woff2'); }
+@font-face { font-family: 'Bangers'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('bangers-400.woff2') format('woff2'); }
+@font-face { font-family: 'Luckiest Guy'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('luckiest-guy-400.woff2') format('woff2'); }
+@font-face { font-family: 'Permanent Marker'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('permanent-marker-400.woff2') format('woff2'); }
+@font-face { font-family: 'Kalam'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('kalam-400.woff2') format('woff2'); }
+@font-face { font-family: 'Kalam'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('kalam-700.woff2') format('woff2'); }
+@font-face { font-family: 'Pacifico'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('pacifico-400.woff2') format('woff2'); }
+@font-face { font-family: 'Lobster'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('lobster-400.woff2') format('woff2'); }
+@font-face { font-family: 'Special Elite'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('special-elite-400.woff2') format('woff2'); }
+@font-face { font-family: 'Silkscreen'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('silkscreen-400.woff2') format('woff2'); }
+@font-face { font-family: 'Silkscreen'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('silkscreen-700.woff2') format('woff2'); }
+@font-face { font-family: 'Black Ops One'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('black-ops-one-400.woff2') format('woff2'); }
+@font-face { font-family: 'Bebas Neue'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('bebas-neue-400.woff2') format('woff2'); }
+
+/* Material Design Icons (Pictogrammers, Apache 2.0, @mdi/font 7.4.47): see ../vendor/LICENSE-mdi. */
+@font-face { font-family: 'Material Design Icons'; font-style: normal; font-weight: 400; font-display: block;
+  src: url('../vendor/materialdesignicons-webfont.woff2') format('woff2'); }
+/* The wordmark "labelbee" (header only, not offered for labels) */
+@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('barlow-condensed-700.woff2') format('woff2'); }

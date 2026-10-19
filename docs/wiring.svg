@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1110 580">
+<style>
+.box { fill: #ffffff; stroke: #1b2320; stroke-width: 1.6; }
+.chip { fill: #eef2f0; stroke: #5a6762; stroke-width: 1.2; }
+.w { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.w5v { stroke: #cf2c22; } .wgnd { stroke: #1b2320; } .wdm { stroke: #8c9893; } .wdp { stroke: #18904c; }
+.w33 { stroke: #d97300; } .wio { stroke: #2a64d6; } .wnc { stroke: #a9b3af; stroke-dasharray: 4 4; }
+.cable { fill: none; stroke: #5a6762; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; opacity: .5; }
+.dot5v { fill: #cf2c22; }
+.pin { fill: #ffffff; stroke: #1b2320; stroke-width: 1.4; }
+text { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11.5px; fill: #1b2320; }
+.tb { font-family: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 15px; }
+.ts { font-size: 10.5px; fill: #5a6762; }
+.tw5v { fill: #cf2c22; } .tacc { fill: #0a7556; }
+</style>
+<rect width="1110" height="580" fill="#ffffff"/>
+        <defs>
+          <g id="gsym2" class="w wgnd" style="stroke-width:2.2">
+            <path d="M0 0 V8 M-11 8 H11 M-7 13 H7 M-3 18 H3"/>
+          </g>
+        </defs>
+
+        <!-- +5 V: USB-B VBUS -> COM (lower half of terminal) -->
+        <path class="w w5v" d="M820 70 H770 V111 H706"/>
+        <!-- +5 V: COM (upper half) -> over the top -> ESP 5Vin -->
+        <path class="w w5v" d="M706 99 H725 V20 H320 V210 H300"/>
+        <text x="500" y="14" class="tw5v" style="font-size:10.5px">+5 V</text>
+
+        <!-- Relay control wires -->
+        <path class="w w33" d="M400 80 H340 V250 H300"/>
+        <path class="w wio" d="M400 105 H355 V280 H300"/>
+
+        <!-- GND A: USB-B GND -> relay GND (hops over NO) -->
+        <path class="w wgnd" d="M820 130 H805 V185 H796 A6 6 0 0 0 784 185 H388 V138 H394"/>
+        <text x="560" y="179" class="ts">GND</text>
+
+        <!-- GND B: relay GND -> USB-A GND (hops over D-, D+) -->
+        <path class="w wgnd" d="M394 128 H380 V200 H600 V429 A6 6 0 0 1 600 441 V459 A6 6 0 0 1 600 471 V495 H820"/>
+        <path class="w wgnd" d="M394 118 H370 V310 H300"/>
+        <text x="592" y="330" text-anchor="end" class="ts">GND</text>
+
+        <!-- NO -> USB-A VBUS -->
+        <path class="w w5v" d="M706 130 H790 V405 H820"/>
+        <text x="798" y="240" class="tw5v" style="font-size:10.5px">switched</text>
+        <text x="798" y="254" class="tw5v" style="font-size:10.5px">+5 V</text>
+
+        <!-- Caps on switched VBUS -->
+        <path class="w w5v" d="M790 280 H660"/>
+        <circle cx="790" cy="280" r="4.5" class="dot5v"/>
+        <circle cx="720" cy="280" r="4" class="dot5v"/>
+        <g class="w wgnd" style="stroke-width:2">
+          <path d="M720 280 V294 M710 294 H730 M710 303 Q720 298 730 303 M720 301 V312"/>
+          <path d="M660 280 V295 M650 295 H670 M650 302 H670 M660 302 V312"/>
+        </g>
+        <use href="#gsym2" x="720" y="312"/>
+        <use href="#gsym2" x="660" y="312"/>
+        <text x="704" y="292" class="ts" style="font-size:9px">+</text>
+        <text x="720" y="350" text-anchor="middle" class="ts">100 µF</text>
+        <text x="660" y="350" text-anchor="middle" class="ts">100 nF</text>
+        <text x="690" y="364" text-anchor="middle" class="ts">at the USB-A pins</text>
+
+        <!-- Data + ESP GND to USB-A -->
+        <path class="w wdm" d="M300 435 H820"/>
+        <path class="w wdp" d="M300 465 H820"/>
+        <text x="450" y="455" text-anchor="middle" class="ts">twisted, &lt; 10 cm</text>
+
+        <!-- Relay module (drawn rotated: control end left, contacts right) -->
+        <rect class="box" x="400" y="60" width="300" height="95" rx="4"/>
+        <circle cx="400" cy="80" r="5" class="pin"/>
+        <circle cx="400" cy="105" r="5" class="pin"/>
+        <rect x="394" y="110" width="12" height="36" rx="3" class="pin"/>
+        <circle cx="700" cy="80" r="5" class="pin"/>
+        <rect x="694" y="94" width="12" height="22" rx="3" class="pin"/>
+        <circle cx="700" cy="130" r="5" class="pin"/>
+        <text x="412" y="84" class="ts">VCC</text>
+        <text x="412" y="109" class="ts">IN</text>
+        <text x="414" y="134" class="ts">3× GND</text>
+        <text x="688" y="84" text-anchor="end" class="ts">NC unused</text>
+        <text x="686" y="109" text-anchor="end" class="ts">2× COM</text>
+        <text x="688" y="134" text-anchor="end" class="ts">NO</text>
+        <text x="550" y="92" text-anchor="middle" class="tb">Relay module 3 V</text>
+        <text x="550" y="110" text-anchor="middle" class="ts">SRD-03VDC-SL-C · EL817</text>
+        <text x="550" y="128" text-anchor="middle" class="tacc">Jumper: high trigger</text>
+
+        <!-- ESP32 board -->
+        <rect class="box" x="40" y="180" width="260" height="360" rx="4"/>
+        <rect class="pin" x="294" y="204" width="12" height="12" rx="2"/>
+        <rect class="pin" x="294" y="244" width="12" height="12" rx="2"/>
+        <rect class="pin" x="294" y="274" width="12" height="12" rx="2"/>
+        <rect class="pin" x="294" y="429" width="12" height="12" rx="2"/>
+        <rect class="pin" x="294" y="459" width="12" height="12" rx="2"/>
+        <rect class="pin" x="294" y="304" width="12" height="12" rx="2"/>
+        <text x="288" y="214" text-anchor="end">5Vin</text>
+        <text x="288" y="254" text-anchor="end">3V3</text>
+        <text x="288" y="284" text-anchor="end">4</text>
+        <text x="288" y="439" text-anchor="end">19 D−</text>
+        <text x="288" y="469" text-anchor="end">20 D+</text>
+        <text x="288" y="314" text-anchor="end">GND</text>
+        <text x="55" y="320" class="tb">ESP32-S3-N16R8</text>
+        <text x="55" y="337" class="ts">DevKitC-1 clone</text>
+        <rect class="chip" x="60" y="352" width="115" height="62" rx="3"/>
+        <text x="117" y="381" text-anchor="middle" class="tb">ESP32-S3</text>
+        <text x="117" y="399" text-anchor="middle" class="ts">USB host</text>
+        <text x="55" y="440" class="ts">solder jumpers open</text>
+        <text x="55" y="455" class="ts">leave native USB-C free</text>
+        <rect class="pin" x="80" y="534" width="36" height="12" rx="3"/>
+        <rect class="pin" x="170" y="534" width="36" height="12" rx="3"/>
+        <text x="143" y="566" text-anchor="middle" class="ts">2× USB-C (flashing/logs)</text>
+
+        <!-- USB-B breakout (power in), socket to the right -->
+        <text x="880" y="36" text-anchor="middle" class="ts">USB-B · power input</text>
+        <rect class="box" x="820" y="45" width="120" height="105" rx="4"/>
+        <rect class="pin" x="934" y="80" width="14" height="40" rx="2"/>
+        <text x="832" y="74">VBUS</text>
+        <text x="832" y="94" class="ts">D− unused</text>
+        <text x="832" y="114" class="ts">D+ unused</text>
+        <text x="832" y="134">GND</text>
+        <path class="cable" d="M948 100 H980"/>
+        <rect class="box" x="980" y="60" width="115" height="80" rx="4"/>
+        <text x="992" y="86" class="tb">Power supply</text>
+        <text x="992" y="106">USB-A 5 V</text>
+        <text x="992" y="124">2 A</text>
+
+        <!-- USB-A breakout (printer), socket to the right -->
+        <text x="880" y="372" text-anchor="middle" class="ts">USB-A · printer</text>
+        <rect class="box" x="820" y="380" width="120" height="145" rx="4"/>
+        <rect class="pin" x="934" y="430" width="14" height="40" rx="2"/>
+        <text x="832" y="409">VBUS</text>
+        <text x="832" y="439">D−</text>
+        <text x="832" y="469">D+</text>
+        <text x="832" y="499">GND</text>
+        <text x="832" y="518" class="ts">GND: 1 wire + C</text>
+        <path class="cable" d="M948 450 H980"/>
+        <rect class="box" x="980" y="405" width="115" height="90" rx="4"/>
+        <text x="992" y="431" class="tb">DYMO</text>
+        <text x="992" y="451" style="font-size:10.5px">LabelManager</text>
+        <text x="992" y="467" style="font-size:10.5px">PnP</text>
+      </svg>

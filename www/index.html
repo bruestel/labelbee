@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>labelbee</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <picture><source srcset="favicon-dark.svg" media="(prefers-color-scheme: dark)"><img class="brand-mark" src="favicon.svg" alt="" width="34" height="30"></picture>
+      <h1>label<span class="bee">bee</span></h1>
+    </div>
+    <div class="topbar-right">
+      <div id="printer-status" class="status" data-state="unknown">
+        <span class="dot"></span><span class="label" data-i18n>Connecting …</span>
+      </div>
+      <div id="lang-slot"></div>
+      <a class="settings-link" href="/settings" title="Settings and info" data-i18n-attr="title">⚙ <span data-i18n>Settings</span></a>
+    </div>
+  </header>
+
+  <main class="layout">
+    <nav class="tools" aria-label="Add elements" data-i18n-attr="aria-label">
+      <span class="tools-title" data-i18n>Insert</span>
+      <button data-add="text" title="Text" data-i18n-attr="title"><b>T</b><span data-i18n>Text</span></button>
+      <button data-add="qr" title="QR code" data-i18n-attr="title"><b>▦</b><span>QR</span></button>
+      <button data-add="barcode" title="Barcode" data-i18n-attr="title"><b>║▌</b><span data-i18n>Barcode</span></button>
+      <button data-add="image" title="Image" data-i18n-attr="title"><b>◩</b><span data-i18n>Image</span></button>
+      <button data-add="rect" title="Frame or line" data-i18n-attr="title"><b>▭</b><span data-i18n>Frame</span></button>
+      <button data-add="icon" title="Icon (Material Design Icons)" data-i18n-attr="title"><b class="mdi-glyph">&#xF01F2;</b><span data-i18n>Icon</span></button>
+      <input type="file" id="image-input" accept="image/*" hidden>
+      <span class="tools-title tools-gap" data-i18n>File</span>
+      <button id="new-design" title="New, empty label" data-i18n-attr="title"><b class="mdi-glyph">&#xF0EED;</b><span data-i18n>New</span></button>
+      <button id="open-templates" title="Open a saved label (Ctrl+O)" data-i18n-attr="title"><b class="mdi-glyph">&#xF0DCF;</b><span data-i18n>Open</span></button>
+      <button id="save-file" title="Save (Ctrl+S)" data-i18n-attr="title"><b class="mdi-glyph">&#xF0818;</b><span data-i18n>Save</span></button>
+      <button id="save-file-as" title="Save under a new name (Ctrl+Shift+S)" data-i18n-attr="title"><b class="mdi-glyph">&#xF0CFC;</b><span data-i18n>Save as</span></button>
+    </nav>
+
+    <section class="stage">
+      <div class="stage-bar">
+        <div id="label-info" class="label-info"></div>
+        <label class="tape-style" title="Tape in the preview (not printed)" data-i18n-attr="title"><span data-i18n>Tape</span>
+          <select id="tape-style">
+            <option value="black-white" data-i18n>Black on white</option>
+            <option value="black-yellow" data-i18n>Black on yellow</option>
+            <option value="black-red" data-i18n>Black on red</option>
+            <option value="black-green" data-i18n>Black on green</option>
+            <option value="black-clear" data-i18n>Black on clear</option>
+            <option value="blue-clear" data-i18n>Blue on clear</option>
+          </select>
+        </label>
+        <div class="zoom">
+          <button id="zoom-out" title="Zoom out" data-i18n-attr="title">−</button>
+          <span id="zoom-value">6×</span>
+          <button id="zoom-in" title="Zoom in" data-i18n-attr="title">+</button>
+          <button id="zoom-fit" title="Fit to window" data-i18n-attr="title" data-i18n>Fit</button>
+        </div>
+      </div>
+      <div class="stage-bar tool-bar">
+        <div id="el-tools" class="el-tools" role="toolbar" aria-label="Selected element" data-i18n-attr="aria-label"></div>
+        <div class="history">
+          <button id="undo" class="tool-glyph" title="Undo (Ctrl+Z)" aria-label="Undo" data-i18n-attr="title aria-label">&#xF054C;</button>
+          <button id="redo" class="tool-glyph" title="Redo (Ctrl+Shift+Z)" aria-label="Redo" data-i18n-attr="title aria-label">&#xF044E;</button>
+        </div>
+      </div>
+      <div id="canvas-wrap" class="canvas-wrap">
+        <canvas id="canvas"></canvas>
+      </div>
+      <p class="hint" data-i18n>Click and drag an element · arrow keys move it (Shift = 5 px) · Delete removes it</p>
+
+      <div class="print-bar">
+        <button id="print" class="primary">Print</button>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <section class="card">
+        <h2 data-i18n>Label</h2>
+        <label><span data-i18n>Tape</span>
+          <select id="tape"></select>
+        </label>
+        <div class="row">
+          <label><span data-i18n>Length</span>
+            <select id="length-mode">
+              <option value="auto" data-i18n>Automatic</option>
+              <option value="fixed" data-i18n>Fixed</option>
+            </select>
+          </label>
+          <label id="length-mm-field">mm
+            <input id="length-mm" type="number" min="5" max="700" step="1">
+          </label>
+          <label id="padding-field"><span data-i18n>Margin mm</span>
+            <input id="padding" type="number" min="0" max="50" step="0.5">
+          </label>
+        </div>
+      </section>
+
+
+      <section class="card" id="props-card">
+        <h2 id="props-title">Properties</h2>
+        <div id="props"></div>
+      </section>
+
+      <section class="card" id="position-card" hidden>
+        <h2 data-i18n>Position</h2>
+        <div id="position"></div>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n>Layers</h2>
+        <ul id="layers" class="layers"></ul>
+      </section>
+    </aside>
+  </main>
+
+
+  <dialog id="template-dialog" class="icon-dialog template-dialog" aria-labelledby="template-dialog-title">
+    <form method="dialog" class="icon-dialog-head">
+      <h2 id="template-dialog-title" data-i18n>Files</h2>
+      <input id="template-search" type="search" placeholder="Search files" aria-label="Search files" data-i18n-attr="placeholder aria-label" autocomplete="off">
+      <button value="cancel" class="icon-dialog-close" aria-label="Close" data-i18n-attr="aria-label">✕</button>
+    </form>
+    <ul id="templates" class="template-grid"></ul>
+    <form id="template-save-form" class="template-save">
+      <label for="template-name" data-i18n>Save as</label>
+      <input id="template-name" placeholder="Name" data-i18n-attr="placeholder" autocomplete="off">
+      <button id="template-save" class="primary" data-i18n>Save</button>
+    </form>
+  </dialog>
+
+  <dialog id="ask-dialog" class="ask-dialog">
+    <form method="dialog">
+      <p id="ask-text"></p>
+      <div id="ask-buttons" class="ask-buttons"></div>
+    </form>
+  </dialog>
+
+  <dialog id="icon-dialog" class="icon-dialog" aria-labelledby="icon-dialog-title">
+    <form method="dialog" class="icon-dialog-head">
+      <h2 id="icon-dialog-title" data-i18n>Choose an icon</h2>
+      <input id="icon-search" type="search" placeholder="Search, e.g. home, wifi, cable …" aria-label="Search icons" data-i18n-attr="placeholder aria-label" autocomplete="off">
+      <button value="cancel" class="icon-dialog-close" aria-label="Close" data-i18n-attr="aria-label">✕</button>
+    </form>
+    <div class="icon-body">
+      <div id="icon-cats" class="icon-cats" role="tablist" aria-orientation="vertical" aria-label="Categories" data-i18n-attr="aria-label"></div>
+      <div id="icon-results" class="icon-results"></div>
+    </div>
+    <p id="icon-status" class="icon-status"></p>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="i18n.js"></script>
+  <script src="vendor/qrcode.js"></script>
+  <script src="vendor/JsBarcode.all.min.js"></script>
+  <script src="vendor/mdi-names.js"></script>
+  <script src="vendor/mdi-meta.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

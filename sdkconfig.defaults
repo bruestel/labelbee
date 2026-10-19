@@ -1,0 +1,55 @@
+# sdkconfig defaults for the ESP32-S3-N16R8 (DevKitC-1 clone).
+# PlatformIO regenerates sdkconfig.<env> from this file; that generated file is gitignored.
+
+# --- Flash -------------------------------------------------------------------
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+CONFIG_PARTITION_TABLE_OFFSET=0x8000
+
+# --- PSRAM -------------------------------------------------------------------
+# 8 MB octal PSRAM. It occupies GPIO35-37: never use those pins.
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_MODE_OCT=y
+CONFIG_SPIRAM_SPEED_80M=y
+CONFIG_SPIRAM_IGNORE_NOTFOUND=y
+
+# --- Templates (LittleFS on the "storage" partition) -------------------------
+# A template's file name is its name in hex plus ".json": 60 bytes of name need 126 characters.
+CONFIG_LITTLEFS_OBJ_NAME_LEN=128
+
+# --- Toolchain ---------------------------------------------------------------
+CONFIG_COMPILER_CXX_EXCEPTIONS=n
+CONFIG_COMPILER_CXX_RTTI=n
+
+# --- FreeRTOS ----------------------------------------------------------------
+CONFIG_FREERTOS_HZ=1000
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
+
+# --- Console -----------------------------------------------------------------
+# The console runs on UART0, which the board's USB-serial chip brings to one USB-C socket.
+# GPIO19/20 (the native USB PHY) belong to the USB host and the printer: no USB-Serial-JTAG
+# console, not even as a secondary one.
+CONFIG_ESP_CONSOLE_UART_DEFAULT=y
+CONFIG_ESP_CONSOLE_SECONDARY_NONE=y
+
+# --- Network -----------------------------------------------------------------
+# The web server's 12 sockets, its listener and control socket, mDNS, SNTP, DHCP.
+CONFIG_LWIP_MAX_SOCKETS=20
+
+# Roaming between access points of the same name (several access points): 802.11k (neighbour reports)
+# and 802.11v (BSS transition management), so an AP can send labelbee to a better one; see net.cpp.
+CONFIG_ESP_WIFI_11KV_SUPPORT=y
+CONFIG_ESP_WIFI_RRM_SUPPORT=y
+CONFIG_ESP_WIFI_WNM_SUPPORT=y
+CONFIG_ESP_WIFI_SCAN_CACHE=y
+
+# --- Logging -----------------------------------------------------------------
+CONFIG_LOG_DEFAULT_LEVEL_INFO=y
+
+# --- Firmware rollback -------------------------------------------------------------
+# A new image runs on probation until the web server is up (web.cpp, confirm_firmware); if it
+# crashes or restarts before, the bootloader goes back to the previous one. Part of the
+# bootloader: takes effect after one flash over USB (OTA does not replace the bootloader).
+CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE=y

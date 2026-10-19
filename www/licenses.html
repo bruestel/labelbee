@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>labelbee · Open source licences</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="settings-page">
+  <header class="topbar settings-top">
+    <div class="brand">
+      <picture><source srcset="favicon-dark.svg" media="(prefers-color-scheme: dark)"><img class="brand-mark" src="favicon.svg" alt="" width="34" height="30"></picture>
+      <h1>label<span class="bee">bee</span></h1>
+      <span class="page-name" data-i18n>Open source licences</span>
+    </div>
+    <div class="topbar-right">
+      <div id="lang-slot"></div>
+      <a class="settings-link" href="/settings#system"><span class="mdi-glyph" aria-hidden="true">&#xF004D;</span> <span data-i18n>Settings</span></a>
+    </div>
+  </header>
+
+  <main class="settings-shell licences">
+    <section class="card">
+      <h2>labelbee</h2>
+      <p data-i18n>labelbee is free software under the Apache License 2.0. It contains the following parts, each under its own licence.</p>
+    </section>
+    <section class="card">
+      <h2 data-i18n>Libraries and icons</h2>
+      <table>
+        <tr><td>qrcode-generator 1.4.4, © 2009 Kazuhiko Arase</td><td><a href="vendor/LICENSE-qrcode-generator">MIT</a></td></tr>
+        <tr><td>JsBarcode 3.11.6, © Johan Lindell</td><td><a href="vendor/LICENSE-jsbarcode">MIT</a></td></tr>
+        <tr><td>Material Design Icons 7.4.47, Pictogrammers</td><td><a href="vendor/LICENSE-mdi">Apache-2.0 / MIT</a></td></tr>
+      </table>
+    </section>
+    <section class="card">
+      <h2 data-i18n>Fonts</h2>
+      <table>
+        <tr><td>Roboto</td><td><a href="fonts/LICENSE-roboto">SIL OFL 1.1</a></td></tr>
+        <tr><td>Roboto Condensed</td><td><a href="fonts/LICENSE-roboto-condensed">SIL OFL 1.1</a></td></tr>
+        <tr><td>Roboto Mono</td><td><a href="fonts/LICENSE-roboto-mono">SIL OFL 1.1</a></td></tr>
+        <tr><td>Roboto Slab</td><td><a href="fonts/LICENSE-roboto-slab">Apache-2.0</a></td></tr>
+        <tr><td>Oswald</td><td><a href="fonts/LICENSE-oswald">SIL OFL 1.1</a></td></tr>
+        <tr><td>Barlow</td><td><a href="fonts/LICENSE-barlow">SIL OFL 1.1</a></td></tr>
+        <tr><td>Barlow Condensed</td><td><a href="fonts/LICENSE-barlow-condensed">SIL OFL 1.1</a></td></tr>
+        <tr><td>Comic Neue</td><td><a href="fonts/LICENSE-comic-neue">SIL OFL 1.1</a></td></tr>
+        <tr><td>Fredoka</td><td><a href="fonts/LICENSE-fredoka">SIL OFL 1.1</a></td></tr>
+        <tr><td>Bangers</td><td><a href="fonts/LICENSE-bangers">SIL OFL 1.1</a></td></tr>
+        <tr><td>Luckiest Guy</td><td><a href="fonts/LICENSE-luckiest-guy">Apache-2.0</a></td></tr>
+        <tr><td>Permanent Marker</td><td><a href="fonts/LICENSE-permanent-marker">Apache-2.0</a></td></tr>
+        <tr><td>Kalam</td><td><a href="fonts/LICENSE-kalam">SIL OFL 1.1</a></td></tr>
+        <tr><td>Pacifico</td><td><a href="fonts/LICENSE-pacifico">SIL OFL 1.1</a></td></tr>
+        <tr><td>Lobster</td><td><a href="fonts/LICENSE-lobster">SIL OFL 1.1</a></td></tr>
+        <tr><td>Special Elite</td><td><a href="fonts/LICENSE-special-elite">Apache-2.0</a></td></tr>
+        <tr><td>Silkscreen</td><td><a href="fonts/LICENSE-silkscreen">SIL OFL 1.1</a></td></tr>
+        <tr><td>Black Ops One</td><td><a href="fonts/LICENSE-black-ops-one">SIL OFL 1.1</a></td></tr>
+        <tr><td>Bebas Neue</td><td><a href="fonts/LICENSE-bebas-neue">SIL OFL 1.1</a></td></tr>
+      </table>
+    </section>
+    <section class="card">
+      <h2 data-i18n>Firmware</h2>
+      <table>
+        <tr><td>ESP-IDF, espressif/usb, espressif/mdns, © Espressif Systems</td><td>Apache-2.0</td></tr>
+        <tr><td>cJSON, © Dave Gamble and cJSON contributors</td><td>MIT</td></tr>
+        <tr><td>esp_littlefs, © Brian Pugh; littlefs, © Arm Limited and the littlefs authors</td><td>MIT, BSD-3-Clause</td></tr>
+        <tr><td data-i18n>Print protocol: dymo-print, © 2021 piobyte GmbH; dymoprint, © 2011 Sebastian J. Bronner</td><td>Apache-2.0</td></tr>
+      </table>
+    </section>
+  </main>
+  <script src="i18n.js"></script>
+  <script>
+    'use strict';
+    I18N.add({
+      'Open source licences': 'Open-Source-Lizenzen', 'Settings': 'Einstellungen',
+      'labelbee is free software under the Apache License 2.0. It contains the following parts, each under its own licence.':
+        'labelbee ist freie Software unter der Apache License 2.0. Es enthält die folgenden Teile, jedes unter seiner eigenen Lizenz.',
+      'Libraries and icons': 'Bibliotheken und Icons', 'Fonts': 'Schriften', 'Firmware': 'Firmware',
+      'Print protocol: dymo-print, © 2021 piobyte GmbH; dymoprint, © 2011 Sebastian J. Bronner':
+        'Druckprotokoll: dymo-print, © 2021 piobyte GmbH; dymoprint, © 2011 Sebastian J. Bronner',
+      'labelbee · Open source licences': 'labelbee · Open-Source-Lizenzen',
+    });
+    I18N.mountSwitch(document.querySelector('#lang-slot'));
+    I18N.apply();
+  </script>
+</body>
+</html>

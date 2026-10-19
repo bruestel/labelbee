@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>labelbee · Settings</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="settings-page">
+  <header class="topbar settings-top">
+    <div class="brand">
+      <picture><source srcset="favicon-dark.svg" media="(prefers-color-scheme: dark)"><img class="brand-mark" src="favicon.svg" alt="" width="34" height="30"></picture>
+      <h1>label<span class="bee">bee</span></h1>
+      <span class="page-name" data-i18n>Settings</span>
+    </div>
+    <div class="topbar-right">
+      <div id="printer-status" class="status" data-state="unknown">
+        <span class="dot"></span><span class="label">Connecting …</span>
+      </div>
+      <div id="lang-slot"></div>
+      <a class="settings-link" href="/"><span class="mdi-glyph" aria-hidden="true">&#xF004D;</span> <span data-i18n>Label</span></a>
+    </div>
+  </header>
+
+  <div class="settings-shell">
+    <!-- Overview: one tile each, details on click -->
+    <section class="tiles" aria-label="Overview" data-i18n-attr="aria-label">
+      <details class="tile" id="tile-printer">
+        <summary>
+          <span class="tile-icon mdi-glyph" aria-hidden="true">&#xF042A;</span>
+          <span class="tile-text"><span class="tile-title" data-i18n>Printer</span><strong class="tile-value" id="tp-value">…</strong><span class="tile-sub" id="tp-sub"></span></span>
+          <span class="tile-more mdi-glyph" aria-hidden="true">&#xF0140;</span>
+        </summary>
+        <dl class="facts" id="tp-facts"></dl>
+      </details>
+      <details class="tile" id="tile-wifi">
+        <summary>
+          <span class="tile-icon mdi-glyph" id="tw-icon" aria-hidden="true">&#xF092F;</span>
+          <span class="tile-text"><span class="tile-title" data-i18n>WiFi</span><strong class="tile-value" id="tw-value">…</strong><span class="tile-sub" id="tw-sub"></span></span>
+          <span class="tile-more mdi-glyph" aria-hidden="true">&#xF0140;</span>
+        </summary>
+        <dl class="facts" id="tw-facts"></dl>
+      </details>
+      <details class="tile" id="tile-ap">
+        <summary>
+          <span class="tile-icon mdi-glyph" aria-hidden="true">&#xF0003;</span>
+          <span class="tile-text"><span class="tile-title" data-i18n>Access point</span><strong class="tile-value" id="ta-value">…</strong><span class="tile-sub" id="ta-sub"></span></span>
+          <span class="tile-more mdi-glyph" aria-hidden="true">&#xF0140;</span>
+        </summary>
+        <dl class="facts" id="ta-facts"></dl>
+      </details>
+      <details class="tile" id="tile-system">
+        <summary>
+          <span class="tile-icon mdi-glyph" aria-hidden="true">&#xF061A;</span>
+          <span class="tile-text"><span class="tile-title">System</span><strong class="tile-value" id="ts-value">…</strong><span class="tile-sub" id="ts-sub"></span></span>
+          <span class="tile-more mdi-glyph" aria-hidden="true">&#xF0140;</span>
+        </summary>
+        <dl class="facts" id="ts-facts"></dl>
+      </details>
+    </section>
+
+    <div class="settings-body">
+      <nav class="settings-nav" role="tablist" aria-label="Sections" data-i18n-attr="aria-label">
+        <button role="tab" id="tab-drucker" aria-controls="panel-drucker" data-tab="drucker"><span class="mdi-glyph" aria-hidden="true">&#xF042A;</span><span data-i18n>Printer</span></button>
+        <button role="tab" id="tab-netzwerk" aria-controls="panel-netzwerk" data-tab="netzwerk"><span class="mdi-glyph" aria-hidden="true">&#xF0317;</span><span data-i18n>Network</span></button>
+        <button role="tab" id="tab-system" aria-controls="panel-system" data-tab="system"><span class="mdi-glyph" aria-hidden="true">&#xF0493;</span>System</button>
+        <button role="tab" id="tab-log" aria-controls="panel-log" data-tab="log"><span class="mdi-glyph" aria-hidden="true">&#xF018D;</span>Log</button>
+      </nav>
+
+      <main class="settings-panels">
+        <!-- Printer: acts at once, no saving -->
+        <section class="spanel" id="panel-drucker" role="tabpanel" aria-labelledby="tab-drucker">
+          <div class="card">
+            <h2 data-i18n>Printer</h2>
+            <label class="switch-row">
+              <span><strong data-i18n>Printer switched on</strong><small data-i18n>Normally always on. Switch it off only when there are problems; after a restart it is on again.</small></span>
+              <input type="checkbox" role="switch" id="p-power" class="switch">
+            </label>
+            <dl class="facts">
+              <dt data-i18n>State</dt><dd id="p-state">…</dd>
+              <dt data-i18n>Tape</dt><dd id="p-cassette">…</dd>
+              <dt data-i18n>Battery</dt><dd class="battery"><meter id="p-meter" min="0" max="100" low="20" high="50" optimum="100" value="0"></meter><span id="p-battery">…</span></dd>
+            </dl>
+          </div>
+          <div class="card">
+            <h2 data-i18n>Test label</h2>
+            <p class="hint-text" data-i18n>Prints a short pattern to check the printer and the tape.</p>
+            <div class="row">
+              <label><span data-i18n>Tape</span>
+                <select id="p-tape">
+                  <option value="12mm">12 mm</option>
+                  <option value="9mm">9 mm</option>
+                  <option value="6mm">6 mm</option>
+                </select>
+              </label>
+              <button id="p-test" class="primary" data-i18n>Print test label</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Network: WiFi and the access point -->
+        <section class="spanel" id="panel-netzwerk" role="tabpanel" aria-labelledby="tab-netzwerk" hidden>
+          <form class="card" id="wifi-form" novalidate>
+            <h2 data-i18n>WiFi</h2>
+            <div class="field" data-key="wifi.ssid">
+              <label for="w-ssid" data-i18n>Network name (SSID)</label>
+              <div class="input-with-button">
+                <input id="w-ssid" maxlength="32" autocomplete="off">
+                <button type="button" id="w-scan-btn"><span class="mdi-glyph" aria-hidden="true">&#xF0349;</span> <span data-i18n>Search networks</span></button>
+              </div>
+              <ul id="w-scan" class="scan-list" hidden></ul>
+            </div>
+            <div class="field" data-key="wifi.password">
+              <label for="w-password" data-i18n>Password</label>
+              <div class="pw">
+                <input id="w-password" type="password" maxlength="64" autocomplete="new-password">
+                <button type="button" class="pw-eye mdi-glyph" data-for="w-password" aria-label="Show password">&#xF0208;</button>
+              </div>
+              <small class="field-error" id="e-w-password"></small>
+            </div>
+            <label class="check" data-key="wifi.open"><input type="checkbox" id="w-nopass"> <span data-i18n>Open network (no password)</span></label>
+            <div class="field" data-key="wifi.mode">
+              <span class="field-label" data-i18n>IP address</span>
+              <div class="segmented" role="radiogroup" aria-label="IP address" data-i18n-attr="aria-label">
+                <label><input type="radio" name="w-mode" value="dhcp"> <span data-i18n>Automatic (DHCP)</span></label>
+                <label><input type="radio" name="w-mode" value="static"> <span data-i18n>Static</span></label>
+              </div>
+            </div>
+            <div id="w-static" class="static-grid">
+              <div class="field" data-key="wifi.ip"><label for="w-ip" data-i18n>IP address</label><input id="w-ip" placeholder="192.168.1.50" inputmode="decimal"><small class="field-error" id="e-w-ip"></small></div>
+              <div class="field" data-key="wifi.mask"><label for="w-mask" data-i18n>Netmask</label><input id="w-mask" placeholder="255.255.255.0 or /24" data-i18n-attr="placeholder" inputmode="decimal"><small class="field-error" id="e-w-mask"></small></div>
+              <div class="field" data-key="wifi.gateway"><label for="w-gateway">Gateway</label><input id="w-gateway" placeholder="192.168.1.1" inputmode="decimal"><small class="field-error" id="e-w-gateway"></small></div>
+              <div class="field" data-key="wifi.dns1"><label for="w-dns1">DNS 1</label><input id="w-dns1" placeholder="empty = gateway" data-i18n-attr="placeholder" inputmode="decimal"><small class="field-error" id="e-w-dns1"></small></div>
+              <div class="field" data-key="wifi.dns2"><label for="w-dns2">DNS 2</label><input id="w-dns2" placeholder="optional" inputmode="decimal"><small class="field-error" id="e-w-dns2"></small></div>
+            </div>
+            <small class="field-error" id="e-w-ssid"></small>
+          </form>
+
+          <form class="card" id="ap-form" novalidate>
+            <h2 data-i18n>Access point</h2>
+            <p class="hint-text"><span data-i18n>labelbee always opens its own WiFi, in addition to the home network. Through it, labelbee can also be reached without the home network at</span> <code>http://192.168.4.1/</code>.</p>
+            <div class="field" data-key="ap.ssid"><label for="a-ssid">Name</label><input id="a-ssid" maxlength="32" autocomplete="off"><small class="field-error" id="e-a-ssid"></small></div>
+            <div class="field" data-key="ap.password">
+              <label for="a-password" data-i18n>Password</label>
+              <div class="pw">
+                <input id="a-password" type="password" maxlength="64" autocomplete="new-password">
+                <button type="button" class="pw-eye mdi-glyph" data-for="a-password" aria-label="Show password">&#xF0208;</button>
+              </div>
+              <small class="field-error" id="e-a-password"></small>
+            </div>
+            <label class="check" data-key="ap.open"><input type="checkbox" id="a-nopass"> <span data-i18n>Open (no password)</span></label>
+          </form>
+        </section>
+
+        <!-- System: name, time, firmware, danger zone -->
+        <section class="spanel" id="panel-system" role="tabpanel" aria-labelledby="tab-system" hidden>
+          <form class="card" id="device-form" novalidate>
+            <h2 data-i18n>Device</h2>
+            <div class="field" data-key="device.name">
+              <label for="d-name" data-i18n>Device name</label>
+              <input id="d-name" maxlength="32" autocomplete="off">
+              <small class="field-hint"><span data-i18n>Reachable as</span> <code id="d-host">labelbee.local</code></small>
+              <small class="field-error" id="e-d-name"></small>
+            </div>
+          </form>
+
+          <form class="card" id="time-form" novalidate>
+            <h2 data-i18n>Time</h2>
+            <p class="clock-line"><span class="mdi-glyph" aria-hidden="true">&#xF0150;</span> <span id="t-now">…</span></p>
+            <div class="field" data-key="time.ntp"><label for="t-ntp" data-i18n>NTP server</label><input id="t-ntp" placeholder="pool.ntp.org" autocomplete="off"></div>
+            <div class="field" data-key="time.tz"><label for="t-zone" data-i18n>Time zone</label><select id="t-zone"></select></div>
+            <div class="field" data-key="time.tz" id="t-custom-field" hidden><label for="t-custom" data-i18n>POSIX time zone</label><input id="t-custom" placeholder="CET-1CEST,M3.5.0,M10.5.0/3"><small class="field-error" id="e-t-custom"></small></div>
+          </form>
+
+          <div class="card">
+            <h2>Firmware</h2>
+            <p class="hint-text"><span data-i18n>Installed:</span> <strong id="f-version">…</strong></p>
+            <div class="file-row">
+              <label class="file-btn"><input id="f-file" type="file" accept=".bin,application/octet-stream"><span class="mdi-glyph" aria-hidden="true">&#xF0A4E;</span> <span data-i18n>Choose file</span></label>
+              <span id="f-name" class="file-name"></span>
+            </div>
+            <div class="progress-row" id="f-progress-row" hidden><progress id="f-progress" max="100" value="0"></progress><span id="f-percent">0 %</span></div>
+            <button id="f-update" class="primary" disabled data-i18n>Install firmware</button>
+            <p class="hint-text licence-link"><a href="/licenses.html" data-i18n>Open source licences</a></p>
+          </div>
+
+          <div class="card danger-zone">
+            <h2 data-i18n>Danger zone</h2>
+            <div class="danger-item">
+              <span><strong data-i18n>Restart</strong><small data-i18n>Restarts labelbee; settings and files are kept.</small></span>
+              <button id="d-restart"><span class="mdi-glyph" aria-hidden="true">&#xF0709;</span> <span data-i18n>Restart</span></button>
+            </div>
+            <div class="danger-item">
+              <span><strong data-i18n>Factory settings</strong><small data-i18n>WiFi, access point, name and time back to the factory state.</small></span>
+              <button id="d-reset" class="danger"><span class="mdi-glyph" aria-hidden="true">&#xF05E8;</span> <span data-i18n>Reset …</span></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Log -->
+        <section class="spanel" id="panel-log" role="tabpanel" aria-labelledby="tab-log" hidden>
+          <div class="card log-card">
+            <div class="log-tools">
+              <div class="segmented small" role="radiogroup" aria-label="Filter">
+                <label><input type="radio" name="log-filter" value="all" checked> <span data-i18n>All</span></label>
+                <label><input type="radio" name="log-filter" value="warn"> <span data-i18n>Warnings</span></label>
+                <label><input type="radio" name="log-filter" value="error"> <span data-i18n>Errors</span></label>
+              </div>
+              <span class="spacer"></span>
+              <button type="button" id="log-pause"><span class="mdi-glyph" aria-hidden="true">&#xF03E4;</span> <span>Pause</span></button>
+              <button type="button" id="log-copy"><span class="mdi-glyph" aria-hidden="true">&#xF018F;</span> <span data-i18n>Copy</span></button>
+            </div>
+            <div id="log" class="log" data-filter="all" role="log" aria-live="off"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Unsaved settings: one bar for all of them -->
+  <div class="save-bar" id="save-bar" hidden>
+    <span class="save-text"><strong id="save-count"></strong><small data-i18n>labelbee restarts afterwards (about 10 s).</small></span>
+    <button type="button" id="save-discard" data-i18n>Discard</button>
+    <button type="button" id="save-apply" class="primary" data-i18n>Save and restart</button>
+  </div>
+
+  <dialog id="reset-dialog" class="ask-dialog">
+    <form method="dialog">
+      <h2 data-i18n>Reset to factory settings?</h2>
+      <p><span data-i18n>WiFi, access point, device name and time are erased. Afterwards labelbee only starts its own WiFi</span> <strong data-i18n>"labelbee"</strong> (<span data-i18n>password</span> <code>labelbee</code>) <span data-i18n>at</span> <code>http://192.168.4.1/</code>.</p>
+      <label class="check"><input type="checkbox" id="reset-files"> <span data-i18n>Also delete all saved labels</span></label>
+      <div class="ask-buttons">
+        <button value="cancel" data-i18n>Cancel</button>
+        <button value="reset" class="danger-fill" data-i18n>Reset</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="restart-overlay" id="restart-overlay" hidden>
+    <div class="restart-box">
+      <span class="spinner" aria-hidden="true"></span>
+      <strong id="restart-title"></strong>
+      <p id="restart-text"></p>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="i18n.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

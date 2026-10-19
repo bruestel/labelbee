@@ -1,0 +1,9 @@
+## The USB host library left ESP-IDF with version 6 and lives in the component registry.
+dependencies:
+  espressif/usb: "^1.0.0"
+  ## mDNS (labelbee.local) is a managed component too.
+  espressif/mdns: "^1.8.0"
+  ## The file system for the label templates.
+  joltwallet/littlefs: "^1.23.0"
+  ## The settings are JSON (cJSON left ESP-IDF with version 6).
+  espressif/cjson: "^1.7.18"
