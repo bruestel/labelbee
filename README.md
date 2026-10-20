@@ -31,7 +31,7 @@ rendered in the browser, the firmware only stores files and talks to the printer
 
 | Part | Notes | Used here |
 |---|---|---|
-| DYMO LabelManager PnP | the printer; D1 tape 6, 9 or 12 mm (only 12 mm has been tested so far) | |
+| DYMO LabelManager PnP | the printer; D1 tape 6, 9 or 12 mm (12 mm and 6 mm tested, 9 mm not yet) | |
 | ESP32-S3 DevKitC-1 (N16R8 clone) | 16 MB flash, 8 MB PSRAM; its native USB pins drive the printer | [amazon.de](https://www.amazon.de/dp/B0D6B2CYNW) |
 | USB-A socket breakout | to the printer, wired to GPIO19 (D−) and GPIO20 (D+) | [amazon.de](https://www.amazon.de/dp/B09YYHNCC3) |
 | USB-B socket breakout | 5 V in from a USB power supply (5 V / 2 A) | [amazon.de](https://www.amazon.de/dp/B09YYHNCC3) |
@@ -99,7 +99,7 @@ change settings. Give the access point a password and keep it in a network you t
 |---|---|
 | `GET /api/status` | tapes, resolution, printer state, cassette, battery |
 | `POST /api/print?tape=12mm&width=W[&copies=N]` | print; body: columns left to right, height/8 bytes each, top dot = MSB |
-| `POST /api/test-print?tape=12mm` | a test pattern |
+| `POST /api/test-print?tape=12mm[&offset=N]` | a test pattern; `offset` tries another head dot for the image to start at (to centre a tape), `ruler=1` prints a ruler over the whole head |
 | `POST /api/power?on=0\|1` | switch the printer |
 | `GET /api/templates`, `PUT\|DELETE /api/templates/<name>` | saved labels (designer JSON) |
 | `GET\|POST /api/settings` | settings (POST restarts) |

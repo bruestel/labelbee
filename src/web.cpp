@@ -350,7 +350,11 @@ static esp_err_t post_test_print(httpd_req_t *req) {
     return send_result(req, false, "Unknown tape width \"" + tape_s + "\".");
   ESP_LOGI(TAG, "test label, %s mm", tape_s.c_str());
   std::string     error;
-  const esp_err_t err = printer::print(label::test_pattern(*tape, TEST_LABEL_WIDTH), 1, error);
+  // optional head dot the image starts at, to find where a narrow tape lies
+  const std::string offset_s = query_param(req, "offset");
+  const int offset = offset_s.empty() ? -1 : std::clamp(std::atoi(offset_s.c_str()), 0, static_cast<int>(64 - label::height_px(*tape)));
+  const bool      ruler = query_param(req, "ruler") == "1";
+  const esp_err_t err   = printer::print(ruler ? label::head_ruler() : label::test_pattern(*tape, TEST_LABEL_WIDTH, offset), 1, error);
   return send_result(req, err == ESP_OK, err == ESP_OK ? "Printed." : error);
 }
 

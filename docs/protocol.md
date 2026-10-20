@@ -66,25 +66,35 @@ Constants: `ESC = 0x1B`, `SYN = 0x16`, `'A' = 0x41`, `'B' = 0x42`, `'C' = 0x43`,
 
 ### Tape geometry
 
-Resolution is 180 dpi (about 7.09 dots per mm). The image height must be exactly the head height
-for the tape:
+Resolution is 180 dpi (about 7.09 dots per mm). The print head has 64 dots (about 9 mm). A narrower
+tape covers only part of the head, and **not in its middle**:
 
-| Tape | Height (dots) | Bytes per column (`ESC D n`) | Height code (`ESC B h`) |
+| Tape | Image height (dots) | Head dots on the tape | Image placed at head dots |
 |---|---|---|---|
-| 12 mm | 64 | 8 | 0 |
-| 9 mm | 48 | 6 | 1 |
-| 6 mm | 32 | 4 | 2 |
+| 12 mm | 64 | all | 0 to 63 |
+| 9 mm | 48 | not measured yet | 0 to 47 |
+| 6 mm | 32 | about 5 to 47 (measured) | 11 to 42 (centred on test prints) |
+
+The reference implementations send `ESC B h` ("dot tab", h = 2 for 6 mm, 1 for 9 mm) and fewer
+bytes per column (`ESC D 4` or `ESC D 6`). On the PnP that prints a 6 mm label off centre, right at
+one edge of the tape, whatever h is (h = 0 and h = 2 came out identical). With 64-dot columns, in
+turn, `ESC B` does move the image (h = 2 by 16 dots). LabelBee therefore always sends all 64 dots
+of a column (`ESC D 8`) with `ESC B 0`, and shifts the tape's image itself to the dots in the table. The measurement: a test print over the whole
+head (`POST /api/test-print?tape=6mm&ruler=1`) with a bar per 8 dots, each bar longer than the one
+before, shows which dots land on the tape. The exact start then comes from test prints with
+`&offset=N` (the pattern shows "^TOP" and N upright at the image's top edge): for 6 mm the margins
+were equal at 11.
 
 LabelBee limits a label to 5000 dots (about 70 cm).
 
 ### Command stream
 
 1. `ESC C 0`: colour (always 0).
-2. `ESC B h`: tape height code from the table.
-3. `ESC D n`: n bytes per column from the table.
+2. `ESC B 0`: no dot tab; the image is placed within the 64 dots instead.
+3. `ESC D 8`: 8 bytes (64 dots) per column.
 4. For each image column, **from right to left** (the printer receives the end of the label
-   first): `SYN` followed by n bytes. The topmost dot is the most significant bit of the first
-   byte; a set bit prints black.
+   first): `SYN` followed by 8 bytes, the tape's image shifted to its head dots (table above). The
+   topmost dot is the most significant bit of the first byte; a set bit prints black.
 5. `ESC D 0` followed by 113 × `SYN`: blank lines that feed the label out to the cutter.
 
 A blank line is a `SYN` while the bytes per column are set to 0 (`ESC D 0`).
@@ -136,6 +146,5 @@ refuses to print if no cassette is inserted.
 
 ## Not yet verified
 
-- Printing on 9 mm and 6 mm tape: only 12 mm has been tested. The values in the table come from
-  the reference implementations.
+- Where 9 mm tape lies on the head: not measured yet (print the head ruler on 9 mm tape).
 - The PnP's current draw while printing and while charging has not been measured.

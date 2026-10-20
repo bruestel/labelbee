@@ -125,6 +125,7 @@ const STORAGE_KEY = 'labelbee.design';
 const MAX_HISTORY = 60;
 const MAX_ZOOM = 16;
 const TAPE_OVERHANG_MM = 4; // blank tape drawn left/right of the label in the preview
+const TAPE_ROOM = 0.35;      // room above and below the tape, as a share of its height
 
 const state = {
   config: {
@@ -885,6 +886,9 @@ function renderLabel() {
     // the fixed length is the whole label; the margin lies inside it, element positions count from it
     width = Math.max(labelWidthFixed(), 2 * pad + 1);
     offsetX = pad;
+  } else if (state.drag?.frozen?.width !== undefined) {
+    // while dragging, the tape stays where it is; it adapts to the new layout on release
+    ({ width, offsetX } = state.drag.frozen);
   } else if (d.elements.length) {
     const boxes = d.elements.map(box);
     const minX = Math.min(...boxes.map((b) => b.x));
@@ -1030,15 +1034,21 @@ function render() {
 
   const cssW = (label.width + 2 * overhang) * z;
   const cssH = Math.round(tapePx * z);
+  // A fixed room above and below the tape: an element taller than the print band keeps its
+  // selection frame and handles visible, and the canvas never changes its height while editing.
+  const bandTop = ((tapePx - label.height) / 2) * z;
+  const padTop = tapeRoom(cssH);
+  const padBottom = padTop;
+  const fullH = cssH + padTop + padBottom;
   const dpr = Math.min(window.devicePixelRatio || 1, 16000 / cssW);
   canvas.style.width = `${cssW}px`;
-  canvas.style.height = `${cssH}px`;
+  canvas.style.height = `${fullH}px`;
   canvas.width = Math.round(cssW * dpr);
-  canvas.height = Math.round(cssH * dpr);
+  canvas.height = Math.round(fullH * dpr);
 
   const ctx = canvas.getContext('2d');
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.clearRect(0, 0, cssW, cssH);
+  ctx.clearRect(0, 0, cssW, fullH);
 
   // Tape
   ctx.save();
@@ -1048,13 +1058,13 @@ function render() {
   const style = TAPE_STYLES[d.tapeStyle] || TAPE_STYLES['black-white'];
   ctx.fillStyle = style.tape;
   ctx.beginPath();
-  ctx.roundRect(0, 0, cssW, cssH, 4);
+  ctx.roundRect(0, padTop, cssW, cssH, 4);
   ctx.fill();
   ctx.restore();
 
   const originX = overhang * z;
-  const originY = Math.round(((tapePx - label.height) / 2) * z);
-  state.view = { originX, originY, offsetX: label.offsetX };
+  const originY = padTop + Math.round(bandTop);
+  state.view = { originX, originY, offsetX: label.offsetX, padTop, padBottom };
 
   // Printable band and cut lines
   ctx.strokeStyle = 'rgba(0,0,0,.18)';
@@ -1070,8 +1080,8 @@ function render() {
   ctx.setLineDash([6, 4]);
   ctx.beginPath();
   for (const x of [originX - 0.5, originX + label.width * z + 0.5]) {
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, cssH);
+    ctx.moveTo(x, padTop);
+    ctx.lineTo(x, padTop + cssH);
   }
   ctx.stroke();
   // the margin, when there is one
@@ -1149,7 +1159,7 @@ function fitZoom() {
   const totalW = label.width + 2 * Math.round(TAPE_OVERHANG_MM * dpmm);
   const tapePx = TAPE_MM[state.design.tape] * dpmm;
   const byWidth = (wrap.clientWidth - 48) / totalW;
-  const byHeight = (Math.max(wrap.clientHeight, 220) - 48) / tapePx;
+  const byHeight = (Math.max(wrap.clientHeight, 220) - 48 - 2 * (HANDLE_PX + 4)) / (tapePx * (1 + 2 * TAPE_ROOM));
   state.zoom = snapZoom(Math.min(byWidth, byHeight));
   render();
 }
@@ -1791,6 +1801,7 @@ canvas.addEventListener('pointerdown', (e) => {
     state.drag = {
       id: el.id, dir: handle.dir, resize: true, clientX: e.clientX, clientY: e.clientY, moved: false,
       orig: { x: el.x, y: el.y, w: el.w, h: el.h, size: el.size, ...(el.type === 'text' ? { w: box(el).w, h: box(el).h } : {}) },
+      frozen: frozenLayout(),
     };
     canvas.setPointerCapture(e.pointerId);
     e.preventDefault();
@@ -1799,7 +1810,7 @@ canvas.addEventListener('pointerdown', (e) => {
   const hit = hitTest(toDesign(e));
   select(hit?.id ?? null);
   if (!hit) return;
-  state.drag = { id: hit.id, clientX: e.clientX, clientY: e.clientY, x: hit.x, y: hit.y, moved: false };
+  state.drag = { id: hit.id, clientX: e.clientX, clientY: e.clientY, x: hit.x, y: hit.y, moved: false, frozen: frozenLayout() };
   canvas.setPointerCapture(e.pointerId);
   e.preventDefault();
 });
@@ -1836,9 +1847,23 @@ canvas.addEventListener('pointermove', (e) => {
   }
 });
 
+/** The room above and below the tape, in CSS pixels. */
+function tapeRoom(cssH) {
+  return Math.ceil(cssH * TAPE_ROOM) + HANDLE_PX + 4;
+}
+
+/** The automatic length and offset at the start of a drag, kept while it lasts. */
+function frozenLayout() {
+  return lastLabel && state.design.lengthMode === 'auto' ? { width: lastLabel.width, offsetX: lastLabel.offsetX } : null;
+}
+
 function endDrag() {
-  if (state.drag?.moved) commit();
+  const moved = state.drag?.moved;
   state.drag = null;
+  if (!moved) return;
+  commit();
+  render();   // the tape follows the new layout now
+  renderLayers();
 }
 canvas.addEventListener('pointerup', endDrag);
 canvas.addEventListener('pointercancel', endDrag);

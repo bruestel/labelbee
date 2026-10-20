@@ -49,14 +49,18 @@ struct Stream {
 constexpr size_t SYNS_PER_BLOCK = 64;
 
 /* The complete command stream for one label of the given width; empty if the width is 0 or above
-   MAX_WIDTH. */
-Stream encode(Tape tape, uint32_t width, const Pixels &black);
+   MAX_WIDTH. offset: the head dot the image starts at (-1: the tape's own). */
+Stream encode(Tape tape, uint32_t width, const Pixels &black, int offset = -1);
 
 /* A label sent as the printer's columns, left to right: bytes_per_line(tape) bytes each, the
    topmost dot the most significant bit of a column's first byte (what the web interface sends). */
 Stream encode_columns(Tape tape, uint32_t width, const uint8_t *columns);
 
-/* A test label: a frame, diagonal stripes and a solid block, `width` dots long. */
-Stream test_pattern(Tape tape, uint32_t width);
+/* A test label: a frame, "^TOP" and the head offset, diagonal stripes and a solid block, `width`
+   dots long. offset: the head dot the image starts at, to try (-1: the tape's own). */
+Stream test_pattern(Tape tape, uint32_t width, int offset = -1);
+
+/* A diagnostic over all 64 dots of the head, whatever tape is in: shows where a narrow tape lies. */
+Stream head_ruler();
 
 }  // namespace label
